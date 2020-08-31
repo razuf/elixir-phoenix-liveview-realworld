@@ -15,8 +15,8 @@ For more information on how to this works with other frontends/backends, head ov
 
 # How it works
 
-Todo:
-> Describe the general architecture of your app here
+[Original doc:](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html)
+"Phoenix LiveView provides rich, real-time user experiences with server-rendered HTML."
 
 ## Installing / Getting started
 
