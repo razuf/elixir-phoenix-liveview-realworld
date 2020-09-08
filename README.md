@@ -5,7 +5,7 @@
 > Elixir (Phoenix LiveView) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
 
 
-### [Demo]()&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
+### [Demo](https://realworld.gigalixirapp.com)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
 
 
 This codebase was created to demonstrate a frontend application built with **Elixir and Phoenix LiveView** including CRUD operations, authentication, routing, pagination, and more.
