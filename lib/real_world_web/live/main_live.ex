@@ -283,6 +283,11 @@ defmodule RealWorldWeb.MainLive do
     end
   end
 
+  defp apply_action(socket, _params, :default_redirect) do
+    socket
+    |> push_redirect(to: Routes.main_path(socket, :home))
+  end
+
   ####################################################################################
   # handle events
   ####################################################################################

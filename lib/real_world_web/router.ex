@@ -18,14 +18,6 @@ defmodule RealWorldWeb.Router do
   end
 
   scope "/", RealWorldWeb do
-    pipe_through(:browser)
-
-    live("/", MainLive, :home)
-    live("/article/:slug", MainLive, :article)
-    live("/profile/:username", MainLive, :profile)
-  end
-
-  scope "/", RealWorldWeb do
     pipe_through([:browser, :redirect_if_user_is_authenticated])
 
     live("/login", MainLive, :login)
@@ -40,6 +32,16 @@ defmodule RealWorldWeb.Router do
     live("/editor", MainLive, :editor)
     live("/editor/:slug", MainLive, :editor)
     live("/logout", MainLive, :logout)
+  end
+
+  scope "/", RealWorldWeb do
+    pipe_through(:browser)
+
+    live("/", MainLive, :home)
+    live("/article/:slug", MainLive, :article)
+    live("/profile/:username", MainLive, :profile)
+
+    live("/*path", MainLive, :default_redirect)
   end
 
   # Other scopes may use custom stacks.
