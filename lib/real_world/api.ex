@@ -37,7 +37,7 @@ defmodule RealWorld.Api do
 
     case Tesla.get(client(session_id), url, headers: [{"content-type", "application/json"}]) do
       {:ok, result} ->
-        result
+        result.body
 
       error ->
         IO.inspect(binding(), label: "### api error - GET")
@@ -49,7 +49,7 @@ defmodule RealWorld.Api do
 
     case Tesla.post(client(session_id), url, request_body) do
       {:ok, result} ->
-        result
+        result.body
 
       error ->
         IO.inspect(binding(), label: "### api error - POST")
@@ -61,7 +61,7 @@ defmodule RealWorld.Api do
 
     case Tesla.delete(client(session_id), url) do
       {:ok, result} ->
-        result
+        result.body
 
       error ->
         IO.inspect(binding(), label: "### api error - DELETE")
@@ -73,7 +73,7 @@ defmodule RealWorld.Api do
 
     case Tesla.put(client(session_id), url, request_body) do
       {:ok, result} ->
-        result
+        result.body
 
       error ->
         IO.inspect(binding(), label: "### api error - PUT")

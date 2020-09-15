@@ -85,7 +85,7 @@ defmodule RealWorld.Datastore do
         request_body = %{"user" => user_attrs}
         result = Api.server_post("/users/login", request_body)
 
-        case result.body do
+        case result do
           %{"user" => user} ->
             {:ok, user}
 
@@ -142,7 +142,7 @@ defmodule RealWorld.Datastore do
       request_body = %{"user" => changeset.changes}
       result = Api.server_post("/users", request_body, session_id)
 
-      case result.body do
+      case result do
         %{"user" => server_user} ->
           {:ok, server_user}
 
@@ -182,7 +182,7 @@ defmodule RealWorld.Datastore do
       request_body = %{"user" => changeset.changes}
       result = Api.server_put("/user", request_body, session_id)
 
-      case result.body do
+      case result do
         %{"user" => backend_user} ->
           frontend_user = Map.merge(backend_user, %{"password" => "dummypassword"})
 
@@ -215,7 +215,7 @@ defmodule RealWorld.Datastore do
 
     result = Api.server_delete("/profiles/#{username}/follow", session_id)
 
-    case result.body do
+    case result do
       %{"profile" => profile} ->
         profile
 
@@ -229,7 +229,7 @@ defmodule RealWorld.Datastore do
 
     result = Api.server_post("/profiles/#{username}/follow", "", session_id)
 
-    case result.body do
+    case result do
       %{"profile" => profile} ->
         profile
 
@@ -255,7 +255,7 @@ defmodule RealWorld.Datastore do
   def get_article_by_slug(slug, session_id) do
     result = Api.server_get("/articles/#{slug}", session_id)
 
-    case result.body do
+    case result do
       %{"article" => article} ->
         article
 
@@ -282,7 +282,7 @@ defmodule RealWorld.Datastore do
       request_body = %{"article" => changeset.changes}
       result = Api.server_post("/articles", request_body, session_id)
 
-      case result.body do
+      case result do
         %{"article" => article} ->
           {:ok, article}
 
@@ -321,7 +321,7 @@ defmodule RealWorld.Datastore do
       request_body = %{"article" => changeset.changes}
       result = Api.server_put("/articles/#{slug}", request_body, session_id)
 
-      case result.body do
+      case result do
         %{"article" => article} ->
           {:ok, article}
 
@@ -350,7 +350,7 @@ defmodule RealWorld.Datastore do
     slug = article["slug"]
     result = Api.server_delete("/articles/#{slug}", session_id)
 
-    case result.body do
+    case result do
       %{"error" => _error} ->
         :error
 
@@ -365,9 +365,8 @@ defmodule RealWorld.Datastore do
     # DELETE /api/articles/:slug/favorite
 
     result = Api.server_delete("/articles/#{slug}/favorite", session_id)
-    # result.body["article"]
 
-    case result.body do
+    case result do
       %{"article" => article} ->
         {:ok, article}
 
@@ -380,8 +379,8 @@ defmodule RealWorld.Datastore do
     # POST /api/articles/:slug/favorite
 
     result = Api.server_post("/articles/#{slug}/favorite", "", session_id)
-    # result.body["article"]
-    case result.body do
+
+    case result do
       %{"article" => article} ->
         {:ok, article}
 
@@ -394,12 +393,12 @@ defmodule RealWorld.Datastore do
 
   def list_articles(offset, limit_per_page, session_id) do
     result = Api.server_get("/articles?limit=#{limit_per_page}&offset=#{offset}", session_id)
-    result_handler_articles(result.body)
+    result_handler_articles(result)
   end
 
   def feed_articles(offset, limit_per_page, session_id) do
     result = Api.server_get("/articles/feed?limit=#{limit_per_page}&offset=#{offset}", session_id)
-    result_handler_articles(result.body)
+    result_handler_articles(result)
   end
 
   def get_articles_by_tag(tag, offset, limit_per_page, session_id) do
@@ -409,7 +408,7 @@ defmodule RealWorld.Datastore do
         session_id
       )
 
-    result_handler_articles(result.body)
+    result_handler_articles(result)
   end
 
   def get_articles_by_username(username, offset, limit_per_page, session_id) do
@@ -419,7 +418,7 @@ defmodule RealWorld.Datastore do
         session_id
       )
 
-    result_handler_articles(result.body)
+    result_handler_articles(result)
   end
 
   def get_articles_favorited_by_username(username, offset, limit_per_page, session_id) do
@@ -429,11 +428,11 @@ defmodule RealWorld.Datastore do
         session_id
       )
 
-    result_handler_articles(result.body)
+    result_handler_articles(result)
   end
 
-  defp result_handler_articles(result_body) do
-    case result_body do
+  defp result_handler_articles(result) do
+    case result do
       %{"articles" => articles, "articlesCount" => articlesCount} ->
         %{"articles" => articles, "articlesCount" => articlesCount}
 
@@ -455,7 +454,7 @@ defmodule RealWorld.Datastore do
   def get_comments_from_one_article(slug, session_id) do
     result = Api.server_get("/articles/#{slug}/comments", session_id)
 
-    case result.body do
+    case result do
       %{"comments" => comments} ->
         comments
 
@@ -473,7 +472,7 @@ defmodule RealWorld.Datastore do
       request_body = %{"comment" => form_params}
       result = Api.server_post("/articles/#{slug}/comments", request_body, session_id)
 
-      case result.body do
+      case result do
         %{"comment" => comment} ->
           {:ok, comment}
 
@@ -502,7 +501,7 @@ defmodule RealWorld.Datastore do
     slug = article["slug"]
     result = Api.server_delete("/articles/#{slug}/comments/#{id}", session_id)
 
-    case result.body do
+    case result do
       %{"error" => _error} ->
         :error
 
@@ -519,7 +518,7 @@ defmodule RealWorld.Datastore do
   def get_profile_by_username(username, session_id) do
     result = Api.server_get("/profiles/#{username}", session_id)
 
-    case result.body do
+    case result do
       %{"profile" => profile} ->
         profile
 
@@ -533,7 +532,7 @@ defmodule RealWorld.Datastore do
   def list_tags(session_id \\ "") do
     result = Api.server_get("/tags", session_id)
 
-    case result.body do
+    case result do
       %{"tags" => tags} ->
         tags
 
